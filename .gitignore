@@ -1,0 +1,18 @@
+# macOS
+.DS_Store
+
+# Xcode user-specific files
+xcuserdata/
+*.xcuserstate
+*.xcscmblueprint
+*.xccheckout
+
+# Build artifacts
+build/
+dist/
+DerivedData/
+.build/
+
+# Logs and temporary files
+*.log
+*.tmp
