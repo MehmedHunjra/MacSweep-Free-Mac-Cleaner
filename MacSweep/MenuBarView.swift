@@ -49,6 +49,8 @@ struct MenuBarView: View {
     @State private var cachedNetworkDisplay: (name: String, icon: String) = ("Network", "network")
     @State private var cachedExternalVolumes: [String] = []
     @State private var cachedExternalVolumeDetails: [(name: String, total: Int64, free: Int64)] = []
+    @State private var cachedTrashSizeBytes: Int64 = 0
+    @State private var cachedStartupItemCount: Int = 0
     private let lastKnownWiFiNameKey = "last_known_wifi_name"
 
     enum MenuTab: String, CaseIterable {
@@ -289,6 +291,9 @@ struct MenuBarView: View {
     private var overviewTab: some View {
         ScrollView(showsIndicators: false) {
             VStack(spacing: 10) {
+                // Topbar quick tools
+                topUtilityRow
+
                 // 2x2 card grid — each card is clickable with a real action
                 LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 8) {
                     // Disk details popup
@@ -444,6 +449,82 @@ struct MenuBarView: View {
                 }
             }
             .padding(12)
+        }
+    }
+
+    private var topUtilityRow: some View {
+        HStack(spacing: 8) {
+            VStack(alignment: .leading, spacing: 8) {
+                HStack(spacing: 6) {
+                    Image(systemName: "trash.fill")
+                        .font(.system(size: 11, weight: .semibold))
+                        .foregroundColor(Color(hex: "8B9DC3"))
+                    Text("Trash")
+                        .font(.system(size: 11, weight: .semibold))
+                        .foregroundColor(.white)
+                }
+                Text(ByteCountFormatter.string(fromByteCount: cachedTrashSizeBytes, countStyle: .file))
+                    .font(.system(size: 19, weight: .bold, design: .rounded))
+                    .foregroundColor(Color(hex: "FF5A74"))
+                HStack {
+                    Spacer()
+                    Button("Release") {
+                        releaseTrash()
+                    }
+                    .buttonStyle(.plain)
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundColor(Color(hex: "53C7FF"))
+                }
+            }
+            .padding(12)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(
+                RoundedRectangle(cornerRadius: 10)
+                    .fill(Color.white.opacity(0.06))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(Color.white.opacity(0.08), lineWidth: 0.8)
+                    )
+            )
+
+            VStack(alignment: .leading, spacing: 8) {
+                HStack(spacing: 6) {
+                    Image(systemName: "person.2.fill")
+                        .font(.system(size: 11, weight: .semibold))
+                        .foregroundColor(Color(hex: "8B9DC3"))
+                    Text("Startup item management")
+                        .font(.system(size: 11, weight: .semibold))
+                        .foregroundColor(.white)
+                        .lineLimit(1)
+                }
+                Text("\(cachedStartupItemCount) startup items detected")
+                    .font(.system(size: 13, weight: .medium))
+                    .foregroundColor(.white.opacity(0.75))
+                    .lineLimit(1)
+                Text("Startup items dragging down boot time")
+                    .font(.system(size: 10))
+                    .foregroundColor(.white.opacity(0.45))
+                    .lineLimit(1)
+                HStack {
+                    Spacer()
+                    Button("Manage") {
+                        openMainApp(section: .performance)
+                    }
+                    .buttonStyle(.plain)
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundColor(Color(hex: "53C7FF"))
+                }
+            }
+            .padding(12)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(
+                RoundedRectangle(cornerRadius: 10)
+                    .fill(Color.white.opacity(0.06))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(Color.white.opacity(0.08), lineWidth: 0.8)
+                    )
+            )
         }
     }
 
@@ -1491,12 +1572,52 @@ struct MenuBarView: View {
                 }
                 return (name: name, total: Int64(total), free: Int64(free))
             }
+            let trashSize = self.getTrashSizeBytes()
+            let startupCount = self.getStartupItemCount()
             DispatchQueue.main.async {
                 self.cachedNetworkDisplay = network
                 self.cachedExternalVolumes = volumes
                 self.cachedExternalVolumeDetails = details
+                self.cachedTrashSizeBytes = trashSize
+                self.cachedStartupItemCount = startupCount
             }
         }
+    }
+
+    private func releaseTrash() {
+        let task = Process()
+        task.launchPath = "/usr/bin/osascript"
+        task.arguments = ["-e", "tell application \"Finder\" to empty trash"]
+        task.standardOutput = FileHandle.nullDevice
+        task.standardError = FileHandle.nullDevice
+        try? task.run()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            refreshPopupCaches()
+        }
+    }
+
+    private func getTrashSizeBytes() -> Int64 {
+        let home = FileManager.default.homeDirectoryForCurrentUser.path
+        let trashPath = "\(home)/.Trash"
+        guard FileManager.default.fileExists(atPath: trashPath) else { return 0 }
+        return ScanEngine.calcSize(path: trashPath)
+    }
+
+    private func getStartupItemCount() -> Int {
+        let fm = FileManager.default
+        let home = fm.homeDirectoryForCurrentUser.path
+        let dirs = [
+            "\(home)/Library/LaunchAgents",
+            "/Library/LaunchAgents",
+            "/Library/LaunchDaemons"
+        ]
+        var total = 0
+        for dir in dirs {
+            guard fm.fileExists(atPath: dir),
+                  let contents = try? fm.contentsOfDirectory(atPath: dir) else { continue }
+            total += contents.filter { $0.hasSuffix(".plist") }.count
+        }
+        return total
     }
 
     private func appGPUText(_ app: RunningAppInfo) -> String {
