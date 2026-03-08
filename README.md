@@ -6,12 +6,13 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![macOS](https://img.shields.io/badge/macOS-13%2B-blue.svg)](#requirements)
 [![Swift](https://img.shields.io/badge/Swift-5.9-orange.svg)](#requirements)
-[![Version](https://img.shields.io/badge/version-3.3-brightgreen.svg)](#)
+[![Version](https://img.shields.io/badge/version-3.3-brightgreen.svg)](https://github.com/MehmedHunjra/MacSweep/releases)
 [![Made by besttech.pk](https://img.shields.io/badge/Made%20by-besttech.pk-teal.svg)](https://besttech.pk)
 
 ---
 
 [![Download MacSweep v3.3](https://img.shields.io/badge/Download%20MacSweep%20v3.3-.DMG%20Installer-169677?style=for-the-badge&logo=apple&logoColor=white)](https://github.com/MehmedHunjra/MacSweep/releases/latest/download/MacSweep-Installer-v3.3.dmg)
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/K3K21VE53X)
 
 > macOS 13 Ventura or later — Apple Silicon & Intel — No subscription required
 

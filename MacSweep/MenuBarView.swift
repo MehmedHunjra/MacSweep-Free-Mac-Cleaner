@@ -890,7 +890,7 @@ struct MenuBarView: View {
 
     private var actionsButtonsStack: some View {
         LazyVGrid(
-            columns: [GridItem(.flexible(), spacing: 6), GridItem(.flexible(), spacing: 6)],
+            columns: [GridItem(.flexible(), spacing: 6), GridItem(.flexible(), spacing: 6), GridItem(.flexible(), spacing: 6)],
             spacing: 6
         ) {
             // ── Immediate actions ──────────────────────────────
