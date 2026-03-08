@@ -11,7 +11,25 @@
 
 ---
 
+[![Download MacSweep v3.3](https://img.shields.io/badge/Download%20MacSweep%20v3.3-.DMG%20Installer-169677?style=for-the-badge&logo=apple&logoColor=white)](https://github.com/MehmedHunjra/MacSweep/releases/latest/download/MacSweep-Installer-v3.3.dmg)
+
+> macOS 13 Ventura or later — Apple Silicon & Intel — No subscription required
+
+---
+
 **MacSweep** is a powerful, fully open source Mac cleaning and optimization app for macOS 13 Ventura and later. It covers everything — system junk cleaning, duplicate removal, malware scanning, memory optimization, startup management, disk visualization, browser privacy, and real-time security protection — all in one native SwiftUI app with no paywalls.
+
+---
+
+## Screenshots
+
+| Dashboard | Smart Scan | Security |
+| --------- | ---------- | -------- |
+| ![Dashboard](screenshots/dashboard.png) | ![Smart Scan](screenshots/smart-scan.png) | ![Security](screenshots/security.png) |
+
+| Menu Bar | Space Lens | Dev Cleaner |
+| -------- | ---------- | ----------- |
+| ![Menu Bar](screenshots/menubar.png) | ![Space Lens](screenshots/space-lens.png) | ![Dev Cleaner](screenshots/dev-cleaner.png) |
 
 ---
 
