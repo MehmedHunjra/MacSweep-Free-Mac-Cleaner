@@ -40,16 +40,16 @@ dist/
 *.tmp
 build_output.txt
 
-# ── Packaging/fix scripts (build-time only) ──────────────────
+# ── Fix/utility scripts (build-time only) ────────────────────
 fix_dupes.rb
 fix_dupes2.rb
 fix_paths.rb
 fix_paths_absolute.rb
 fix_pbxproj.rb
 generate-dmg-bg.py
-dmg-resources/
 OPEN_APP.command
-build-dmg.sh
+
+# ── build-dmg.sh and dmg-resources are tracked (needed by users)
 
 # ── Python cache ─────────────────────────────────────────────
 __pycache__/
