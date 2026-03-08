@@ -71,9 +71,15 @@ echo ""
 echo "📂 Staging DMG contents..."
 cp -a "$APP_PATH" "${STAGING_DIR}/${APP_NAME}.app"
 
-# Remove quarantine attributes so macOS Gatekeeper doesn't block the app
+# Remove quarantine attributes
 xattr -cr "${STAGING_DIR}/${APP_NAME}.app" 2>/dev/null || true
-echo "🔓 Quarantine attributes removed from app bundle"
+echo "🔓 Quarantine attributes removed"
+
+# Ad-hoc code sign the app (reduces Gatekeeper blocking without a paid certificate)
+echo "✍️  Ad-hoc signing app bundle..."
+codesign --force --deep --sign - \
+    --options runtime \
+    "${STAGING_DIR}/${APP_NAME}.app" 2>/dev/null && echo "✅ Ad-hoc signed" || echo "⚠️  Signing skipped"
 
 ln -s /Applications "${STAGING_DIR}/Applications"
 

@@ -114,19 +114,35 @@
 
 ---
 
-## Download & Install (.DMG)
+## Download & Install
 
-### Easiest Install (1 command — handles Gatekeeper automatically)
+### Method 1 — Homebrew (Recommended — Zero Warnings)
 
-Download the DMG from the button above, then open Terminal and run:
+```bash
+brew install --cask macsweep
+```
+
+Homebrew handles everything automatically. No Gatekeeper warnings, no Terminal tricks.
+[Install Homebrew](https://brew.sh) first if you don't have it.
+
+### Method 2 — One-Line Terminal Install
+
+Download the DMG, then open Terminal and paste:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/MehmedHunjra/MacSweep/main/install.sh | bash
 ```
 
-This script removes macOS quarantine, installs MacSweep to `/Applications`, and launches it. No warnings, no errors.
+Removes quarantine, installs to `/Applications`, and opens MacSweep automatically.
 
-### Option 1 — Build DMG from Source
+### Method 3 — Download DMG Manually
+
+1. Click the **Download MacSweep v3.3** button above
+2. Open **System Settings → Privacy & Security**
+3. Scroll down → click **Open Anyway** next to MacSweep
+4. Drag MacSweep to Applications
+
+### Method 4 — Build from Source
 
 ```bash
 git clone https://github.com/MehmedHunjra/MacSweep.git
@@ -134,36 +150,22 @@ cd MacSweep
 bash build-dmg.sh
 ```
 
-This builds the app and produces `dist/MacSweep-Installer-v3.3.dmg`.
-Open the DMG, drag MacSweep to Applications, and launch.
+### "App is damaged" error?
 
-### macOS Gatekeeper Warning — "App is damaged"
-
-MacSweep is open source and not yet notarized with Apple. If you see
-**"MacSweep is damaged and can't be opened"**, use one of these fixes:
-
-**Fix 1 — Remove quarantine (recommended):**
+macOS blocks unsigned apps downloaded from the internet. Fix it in one command:
 
 ```bash
-xattr -d com.apple.quarantine ~/Downloads/MacSweep-Installer-v3.3.dmg
+xattr -cr /Applications/MacSweep.app
 ```
 
-Then open the DMG again normally.
-
-**Fix 2 — Right-click to open:**
-Right-click the DMG → **Open** → click **Open** on the warning.
-
-**Fix 3 — System Settings:**
-System Settings → Privacy & Security → scroll down → click **Open Anyway**.
-
-### Option 2 — Manual Xcode Build
+### Build from Xcode
 
 ```bash
 git clone https://github.com/MehmedHunjra/MacSweep.git
 open MacSweep.xcodeproj
 ```
 
-Select **MacSweep** scheme → **My Mac** destination → press **Run** (⌘R).
+Select **MacSweep** scheme → **My Mac** → press **Run** (⌘R). No warnings when built locally.
 
 ---
 
