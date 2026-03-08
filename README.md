@@ -116,6 +116,16 @@
 
 ## Download & Install (.DMG)
 
+### Easiest Install (1 command — handles Gatekeeper automatically)
+
+Download the DMG from the button above, then open Terminal and run:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/MehmedHunjra/MacSweep/main/install.sh | bash
+```
+
+This script removes macOS quarantine, installs MacSweep to `/Applications`, and launches it. No warnings, no errors.
+
 ### Option 1 — Build DMG from Source
 
 ```bash
