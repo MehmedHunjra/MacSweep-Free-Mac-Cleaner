@@ -1,6 +1,41 @@
 import Foundation
 import SwiftUI
 import AppKit
+import UserNotifications
+
+// MARK: - Notification Manager
+
+final class NotificationManager {
+    static let shared = NotificationManager()
+    private init() {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { _, _ in }
+    }
+
+    func playSound(_ name: String) {
+        NSSound(named: name)?.play()
+    }
+
+    func notifyThreatDetected(threatCount: Int) {
+        let content = UNMutableNotificationContent()
+        content.title = "MacSweep — Threat Detected"
+        content.body  = "\(threatCount) suspicious file\(threatCount == 1 ? "" : "s") found. Open MacSweep to review."
+        content.sound = .default
+        deliver(content, id: "threat-\(Date().timeIntervalSince1970)")
+    }
+
+    func notifyIntegrityAlert(description: String) {
+        let content = UNMutableNotificationContent()
+        content.title = "MacSweep — System Integrity Alert"
+        content.body  = description
+        content.sound = .default
+        deliver(content, id: "integrity-\(Date().timeIntervalSince1970)")
+    }
+
+    private func deliver(_ content: UNMutableNotificationContent, id: String) {
+        let request = UNNotificationRequest(identifier: id, content: content, trigger: nil)
+        UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+    }
+}
 
 // MARK: - Threat Severity
 
@@ -328,7 +363,7 @@ class MalwareScanEngine: ObservableObject {
                 self.isScanning = false
                 self.progress = 1.0
                 self.lastScanDate = Date()
-                NSSound(named: "Submarine")?.play()
+                NotificationManager.shared.playSound("Submarine")
                 if !self.threats.isEmpty {
                     NotificationManager.shared.notifyThreatDetected(threatCount: self.threats.count)
                 }
@@ -578,6 +613,7 @@ class AdwareCleanEngine: ObservableObject {
                 self.items = finalFound
                 self.isScanning = false
                 self.progress = 1.0
+                NotificationManager.shared.playSound("Hero")
             }
         }
     }
@@ -2010,11 +2046,19 @@ final class IntegrityMonitorEngine: ObservableObject {
 
     private func reconcile(with snapshot: [IntegrityItem]) {
         let wl = whitelist
+        let oldHighRiskCount = highRiskCount
+        
         items = snapshot.map { item in
             var i = item
             i.isWhitelisted = wl.contains(i.path)
             if i.isWhitelisted { i.risk = .low }
             return i
+        }
+        
+        let newHighRiskCount = highRiskCount
+        if newHighRiskCount > oldHighRiskCount {
+            NotificationManager.shared.notifyIntegrityAlert(description: "New high-risk system modification detected.")
+            NotificationManager.shared.playSound("Basso")
         }
     }
 
