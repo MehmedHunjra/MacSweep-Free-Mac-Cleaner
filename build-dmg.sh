@@ -70,6 +70,11 @@ echo ""
 # ── Stage DMG contents ───────────────────────────────────────
 echo "📂 Staging DMG contents..."
 cp -a "$APP_PATH" "${STAGING_DIR}/${APP_NAME}.app"
+
+# Remove quarantine attributes so macOS Gatekeeper doesn't block the app
+xattr -cr "${STAGING_DIR}/${APP_NAME}.app" 2>/dev/null || true
+echo "🔓 Quarantine attributes removed from app bundle"
+
 ln -s /Applications "${STAGING_DIR}/Applications"
 
 # Background (hidden .background folder — standard macOS DMG pattern)
