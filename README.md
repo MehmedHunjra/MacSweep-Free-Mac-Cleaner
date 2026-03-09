@@ -13,9 +13,8 @@
 
 ---
 
-[![Download MacSweep v3.3 — DMG](https://img.shields.io/badge/Download%20v3.3-.DMG-169677?style=for-the-badge&logo=apple&logoColor=white)](https://github.com/MehmedHunjra/MacSweep/releases/download/v3.3/MacSweep-3.3.dmg)
-[![Download MacSweep v3.3 — ZIP (faster)](https://img.shields.io/badge/Download%20v3.3-.DMG.ZIP%20%E2%80%94%20faster-0e7a60?style=for-the-badge&logo=apple&logoColor=white)](https://github.com/MehmedHunjra/MacSweep/releases/download/v3.3/MacSweep-3.3.dmg.zip)
-[![Support MacSweep on Ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/K3K21VE53X)
+[![Download MacSweep v3.3](https://img.shields.io/badge/⬇%20Download%20MacSweep%20v3.3-Free%20for%20macOS-169677?style=for-the-badge&logo=apple&logoColor=white)](https://github.com/MehmedHunjra/MacSweep/releases/tag/v3.3)
+[![Support on Ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/K3K21VE53X)
 
 > **macOS 13 Ventura or later · Apple Silicon (M1/M2/M3/M4) & Intel · Free forever · No subscription required**
 
