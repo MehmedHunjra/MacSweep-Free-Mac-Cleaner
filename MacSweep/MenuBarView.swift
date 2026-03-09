@@ -133,6 +133,7 @@ struct MenuBarView: View {
         }
         .frame(width: 840)
         .background(bgGradient)
+        .background(MenuBarPopupPositioner())
         .animation(.easeInOut(duration: 0.22), value: settings.menuBarTab)
         .onReceive(Timer.publish(every: 3.0, on: .main, in: .common).autoconnect()) { _ in
             // Keep menu popup values fresh while it is open.
@@ -3111,6 +3112,55 @@ struct MenuBarStatusRow: View {
                 }
             }
             .frame(height: 4)
+        }
+    }
+}
+
+// MARK: - Menu Bar Popup Positioner
+// Moves the MenuBarExtra popup window to the top-right corner every time it opens.
+private struct MenuBarPopupPositioner: NSViewRepresentable {
+    func makeNSView(context: Context) -> NSView {
+        let view = _PositionerView()
+        return view
+    }
+    func updateNSView(_ nsView: NSView, context: Context) {}
+}
+
+private final class _PositionerView: NSView {
+    private var observer: NSObjectProtocol?
+
+    override func viewDidMoveToWindow() {
+        super.viewDidMoveToWindow()
+        guard let window else { return }
+        positionTopRight(window)
+
+        // Re-position every time the popup becomes key (i.e. every click on the icon)
+        observer = NotificationCenter.default.addObserver(
+            forName: NSWindow.didBecomeKeyNotification,
+            object: window,
+            queue: .main
+        ) { [weak window] _ in
+            guard let window else { return }
+            self.positionTopRight(window)
+        }
+    }
+
+    override func removeFromSuperview() {
+        if let observer { NotificationCenter.default.removeObserver(observer) }
+        super.removeFromSuperview()
+    }
+
+    private func positionTopRight(_ window: NSWindow) {
+        for delay in [0.05, 0.15, 0.3] {
+            DispatchQueue.main.asyncAfter(deadline: .now() + delay) { [weak window] in
+                guard let window, window.isVisible else { return }
+                guard let screen = window.screen ?? NSScreen.main else { return }
+                let visible = screen.visibleFrame
+                let size = window.frame.size
+                let x = visible.maxX - size.width - 8
+                let y = visible.maxY - size.height
+                window.setFrameOrigin(NSPoint(x: x, y: y))
+            }
         }
     }
 }

@@ -31,22 +31,18 @@ enum DetailTab: String, CaseIterable {
 struct ApplicationsManagerView: View {
     @ObservedObject var engine: ApplicationsEngine
     @State private var selectedAppId: UUID?
-    @State private var selectedAppIds: Set<UUID> = []
-    @State private var isMultiSelectMode = false
     @State private var showUninstallConfirm = false
     @State private var showResetConfirm = false
     @State private var showClearAllConfirm = false
-    @State private var showBatchUninstallConfirm = false
     @State private var showResult = false
     @State private var resultMessage = ""
+    @State private var showFDAAlert = false
     @State private var searchText = ""
     @State private var activeFilter: AppFilter = .all
     @State private var activeSort: AppSort = .name
     @State private var activeDetailTab: DetailTab = .leftovers
-    @State private var showBatchCleanConfirm = false      // single-select "Clean All Leftovers"
-    @State private var showMultiCleanConfirm = false      // multi-select batch clean
+    @State private var showBatchCleanConfirm = false
     @State private var showBatchScratchConfirm = false
-    @State private var showCleanSelectedLeftoversConfirm = false
     @State private var scratchRefreshId = UUID()
 
     @EnvironmentObject var navManager: NavigationManager
@@ -120,9 +116,7 @@ struct ApplicationsManagerView: View {
                 HStack(spacing: 0) {
                     appsList
                     Divider()
-                    if isMultiSelectMode && selectedAppIds.count > 1 {
-                        multiSelectDetailPanel
-                    } else if let app = selectedApp {
+                    if let app = selectedApp {
                         appDetailView(app: app)
                     } else {
                         emptyState
@@ -144,9 +138,17 @@ struct ApplicationsManagerView: View {
             }
         }
         .alert("Action Complete", isPresented: $showResult) {
-            Button("OK") { engine.scanAll() }
+            Button("OK") { }
         } message: {
             Text(resultMessage)
+        }
+        .alert("Full Disk Access Required", isPresented: $showFDAAlert) {
+            Button("Open System Settings") {
+                NSWorkspace.shared.open(URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_AllFiles")!)
+            }
+            Button("Cancel", role: .cancel) { }
+        } message: {
+            Text("MacSweep needs Full Disk Access to clean app files.\n\nGo to System Settings → Privacy & Security → Full Disk Access and enable MacSweep.")
         }
     }
 
@@ -366,48 +368,12 @@ struct ApplicationsManagerView: View {
             .padding(.horizontal, 12)
             .padding(.top, 8)
 
-            // App count + multi-select toggle
-            HStack(spacing: 8) {
+            // App count
+            HStack {
                 Text("\(filteredApps.count) apps")
                     .font(.system(size: 11, weight: .medium))
                     .foregroundColor(.secondary)
                 Spacer()
-                Button {
-                    withAnimation(.easeInOut(duration: 0.15)) {
-                        isMultiSelectMode.toggle()
-                        if !isMultiSelectMode { selectedAppIds.removeAll() }
-                    }
-                } label: {
-                    Text(isMultiSelectMode ? "Done" : "Select")
-                        .font(.system(size: 10, weight: .semibold))
-                        .foregroundColor(isMultiSelectMode ? Color(hex: "6A11CB") : .secondary)
-                        .padding(.horizontal, 8)
-                        .padding(.vertical, 3)
-                        .background(
-                            Capsule().fill(isMultiSelectMode ? Color(hex: "6A11CB").opacity(0.1) : Color.gray.opacity(0.1))
-                        )
-                }
-                .buttonStyle(.plain)
-
-                if isMultiSelectMode {
-                    Button {
-                        let allIds = Set(filteredApps.map(\.id))
-                        if selectedAppIds == allIds {
-                            selectedAppIds.removeAll()
-                        } else {
-                            selectedAppIds = allIds
-                        }
-                    } label: {
-                        let allSelected = selectedAppIds == Set(filteredApps.map(\.id))
-                        Text(allSelected ? "None" : "All")
-                            .font(.system(size: 10, weight: .semibold))
-                            .foregroundColor(.secondary)
-                            .padding(.horizontal, 8)
-                            .padding(.vertical, 3)
-                            .background(Capsule().fill(Color.gray.opacity(0.1)))
-                    }
-                    .buttonStyle(.plain)
-                }
             }
             .padding(.horizontal, 14)
             .padding(.top, 6)
@@ -418,21 +384,11 @@ struct ApplicationsManagerView: View {
                     ForEach(filteredApps) { app in
                         AppListRow(
                             app: app,
-                            isSelected: isMultiSelectMode ? selectedAppIds.contains(app.id) : selectedAppId == app.id,
-                            isMultiSelectMode: isMultiSelectMode,
-                            isChecked: selectedAppIds.contains(app.id),
+                            isSelected: selectedAppId == app.id,
                             showLastUsed: activeFilter == .unusedApps,
                             onTap: {
-                                if isMultiSelectMode {
-                                    if selectedAppIds.contains(app.id) {
-                                        selectedAppIds.remove(app.id)
-                                    } else {
-                                        selectedAppIds.insert(app.id)
-                                    }
-                                } else {
-                                    selectedAppId = app.id
-                                    activeDetailTab = .leftovers
-                                }
+                                selectedAppId = app.id
+                                activeDetailTab = .leftovers
                             }
                         )
                     }
@@ -441,7 +397,7 @@ struct ApplicationsManagerView: View {
                 .padding(.horizontal, 8)
             }
         }
-        .frame(width: 270)
+        .frame(width: 260)
         .background(Color(NSColor.controlBackgroundColor).opacity(0.5))
     }
 
@@ -894,215 +850,27 @@ struct ApplicationsManagerView: View {
         VStack(spacing: 12) {
             Image(systemName: "square.stack.3d.up.fill").font(.system(size: 40)).foregroundColor(.secondary.opacity(0.3))
             Text("Select an application to view details").foregroundColor(.secondary)
-            Text("Tip: Tap \"Select\" to choose multiple apps")
-                .font(.system(size: 11))
-                .foregroundColor(.secondary.opacity(0.6))
         }.frame(maxWidth: .infinity, maxHeight: .infinity)
-    }
-
-    // MARK: - Multi-Select Detail Panel
-    var multiSelectDetailPanel: some View {
-        VStack(spacing: 0) {
-            // Header
-            HStack(spacing: 14) {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 10)
-                        .fill(LinearGradient(colors: [Color(hex: "6A11CB"), Color(hex: "2575FC")],
-                                            startPoint: .topLeading, endPoint: .bottomTrailing))
-                        .frame(width: 44, height: 44)
-                    Image(systemName: "checkmark.circle.fill")
-                        .font(.system(size: 20, weight: .bold))
-                        .foregroundColor(.white)
-                }
-                VStack(alignment: .leading, spacing: 2) {
-                    Text("\(selectedAppIds.count) Apps Selected")
-                        .font(.system(size: 16, weight: .bold))
-                    let totalSize = engine.apps.filter { selectedAppIds.contains($0.id) }.reduce(Int64(0)) { $0 + $1.size }
-                    Text(ByteCountFormatter.string(fromByteCount: totalSize, countStyle: .file) + " total")
-                        .font(.system(size: 11)).foregroundColor(.secondary)
-                }
-                Spacer()
-            }
-            .padding(.horizontal, 20).padding(.vertical, 16)
-            .background(Color(NSColor.controlBackgroundColor))
-
-            Divider()
-
-            // Selected apps list summary
-            ScrollView(showsIndicators: false) {
-                VStack(spacing: 6) {
-                    let selectedApps = engine.apps.filter { selectedAppIds.contains($0.id) }
-
-                    // Leftovers summary
-                    let appsWithLeftovers = selectedApps.filter { !$0.leftovers.isEmpty }
-                    let totalLeftoverSize = appsWithLeftovers.flatMap(\.leftovers).reduce(Int64(0)) { $0 + $1.size }
-
-                    if !appsWithLeftovers.isEmpty {
-                        HStack(spacing: 12) {
-                            ZStack {
-                                RoundedRectangle(cornerRadius: 8).fill(Color.orange.opacity(0.15)).frame(width: 36, height: 36)
-                                Image(systemName: "trash.fill").font(.system(size: 15)).foregroundColor(.orange)
-                            }
-                            VStack(alignment: .leading, spacing: 2) {
-                                Text("Leftover Files")
-                                    .font(.system(size: 13, weight: .semibold))
-                                Text("\(appsWithLeftovers.count) apps · \(ByteCountFormatter.string(fromByteCount: totalLeftoverSize, countStyle: .file))")
-                                    .font(.system(size: 11)).foregroundColor(.secondary)
-                            }
-                            Spacer()
-                            Button {
-                                showMultiCleanConfirm = true
-                            } label: {
-                                Text("Clean All")
-                                    .font(.system(size: 11, weight: .bold))
-                                    .foregroundColor(.white)
-                                    .padding(.horizontal, 12).padding(.vertical, 6)
-                                    .background(Color.orange.cornerRadius(8))
-                            }
-                            .buttonStyle(.plain)
-                        }
-                        .padding(14)
-                        .background(RoundedRectangle(cornerRadius: 10).fill(Color.orange.opacity(0.06)))
-                        .overlay(RoundedRectangle(cornerRadius: 10).strokeBorder(Color.orange.opacity(0.2), lineWidth: 1))
-                    }
-
-                    // Per-app list
-                    ForEach(selectedApps) { app in
-                        HStack(spacing: 10) {
-                            if let icon = app.icon {
-                                Image(nsImage: icon).resizable().frame(width: 28, height: 28).cornerRadius(6)
-                            } else {
-                                RoundedRectangle(cornerRadius: 6).fill(Color.gray.opacity(0.2)).frame(width: 28, height: 28)
-                                    .overlay(Image(systemName: "app.fill").font(.system(size: 13)).foregroundColor(.secondary))
-                            }
-                            VStack(alignment: .leading, spacing: 1) {
-                                Text(app.name).font(.system(size: 12, weight: .semibold)).lineLimit(1)
-                                Text(app.sizeFormatted).font(.system(size: 10)).foregroundColor(.secondary)
-                            }
-                            Spacer()
-                            if !app.leftovers.isEmpty {
-                                Text("\(app.leftovers.count) leftovers")
-                                    .font(.system(size: 9, weight: .bold))
-                                    .foregroundColor(.white)
-                                    .padding(.horizontal, 6).padding(.vertical, 2)
-                                    .background(Color.orange.opacity(0.85).cornerRadius(4))
-                            }
-                        }
-                        .padding(.horizontal, 14).padding(.vertical, 8)
-                        .background(RoundedRectangle(cornerRadius: 8).fill(Color(NSColor.windowBackgroundColor)))
-                    }
-                }
-                .padding(16)
-            }
-
-            Spacer()
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .confirmationDialog(
-            "Clean Leftovers from \(selectedAppIds.count) Apps?",
-            isPresented: $showMultiCleanConfirm, titleVisibility: .visible
-        ) {
-            let appsWithLeftovers = engine.apps.filter { selectedAppIds.contains($0.id) && !$0.leftovers.isEmpty }
-            Button("Clean Leftovers from \(appsWithLeftovers.count) Apps", role: .destructive) {
-                var cleaned: Int64 = 0
-                for app in appsWithLeftovers {
-                    cleaned += engine.resetApp(appId: app.id)
-                }
-                resultMessage = "Cleaned \(ByteCountFormatter.string(fromByteCount: cleaned, countStyle: .file)) from \(appsWithLeftovers.count) selected apps."
-                selectedAppIds.removeAll()
-                isMultiSelectMode = false
-                showResult = true
-            }
-            Button("Cancel", role: .cancel) {}
-        } message: {
-            Text("This will remove selected leftover files from all checked apps.")
-        }
     }
 
     // MARK: - Footer
     var appsFooter: some View {
-        Group {
-            if isMultiSelectMode && selectedAppIds.count > 0 {
-                multiSelectFooter
-            } else {
-                singleSelectFooter
-            }
-        }
-    }
-
-    private var multiSelectFooter: some View {
-        HStack(spacing: 10) {
-            Text("\(selectedAppIds.count) selected")
-                .font(.system(size: 12, weight: .semibold))
-                .foregroundColor(Color(hex: "6A11CB"))
-
-            Spacer()
-
-            // Batch clean leftovers for selected
-            let selectedWithLeftovers = engine.apps.filter { selectedAppIds.contains($0.id) && !$0.leftovers.isEmpty }
-            if !selectedWithLeftovers.isEmpty {
-                Button { showMultiCleanConfirm = true } label: {
-                    HStack(spacing: 4) {
-                        Image(systemName: "sparkles")
-                        Text("Clean Leftovers (\(selectedWithLeftovers.count))")
-                    }
-                    .font(.system(size: 11, weight: .bold))
-                    .foregroundColor(.white)
-                    .padding(.horizontal, 12).padding(.vertical, 8)
-                    .background(LinearGradient(colors: [Color(hex: "F7971E"), Color(hex: "FFD200")],
-                                              startPoint: .leading, endPoint: .trailing).cornerRadius(8))
-                }
-                .buttonStyle(.plain)
-            }
-
-            // Batch uninstall
-            Button { showBatchUninstallConfirm = true } label: {
-                HStack(spacing: 4) {
-                    Image(systemName: "trash")
-                    Text("Uninstall (\(selectedAppIds.count))")
-                }
-                .font(.system(size: 11, weight: .bold))
-                .foregroundColor(.white)
-                .padding(.horizontal, 12).padding(.vertical, 8)
-                .background(LinearGradient(colors: [Color(hex: "E94560"), Color(hex: "D0021B")],
-                                          startPoint: .leading, endPoint: .trailing).cornerRadius(8))
-            }
-            .buttonStyle(.plain)
-            .confirmationDialog(
-                "Uninstall \(selectedAppIds.count) Apps?",
-                isPresented: $showBatchUninstallConfirm, titleVisibility: .visible
-            ) {
-                Button("Uninstall \(selectedAppIds.count) Apps (Move to Trash)", role: .destructive) {
-                    var succeeded = 0
-                    for id in selectedAppIds {
-                        if engine.uninstallApp(appId: id) { succeeded += 1 }
-                    }
-                    resultMessage = "Moved \(succeeded) of \(selectedAppIds.count) apps to Trash."
-                    selectedAppIds.removeAll(); isMultiSelectMode = false
-                    showResult = true
-                }
-                Button("Cancel", role: .cancel) {}
-            } message: { Text("Selected apps will be moved to Trash. This cannot be undone easily.") }
-        }
-        .padding(.horizontal, 20)
-        .padding(.vertical, 12)
-    }
-
-    private var singleSelectFooter: some View {
-        HStack(spacing: 10) {
-            // Rescan
-            Button { engine.scanAll() } label: {
+        HStack(spacing: 12) {
+            Button {
+                engine.scanAll()
+            } label: {
                 Label("Rescan", systemImage: "arrow.clockwise")
                     .font(.system(size: 12, weight: .medium))
-                    .padding(.horizontal, 12).padding(.vertical, 7)
+                    .padding(.horizontal, 14)
+                    .padding(.vertical, 7)
                     .background(Color(NSColor.controlBackgroundColor))
                     .cornerRadius(8)
             }
             .buttonStyle(.plain)
 
-            // Batch clean all leftovers
-            let allAppsWithLeftovers = engine.apps.filter { !$0.leftovers.isEmpty }.count
-            if allAppsWithLeftovers > 0 {
+            // Batch clean all
+            let appsWithLeftovers = engine.apps.filter { !$0.leftovers.isEmpty }.count
+            if appsWithLeftovers > 0 {
                 Button { showBatchCleanConfirm = true } label: {
                     HStack(spacing: 4) {
                         Image(systemName: "sparkles")
@@ -1110,86 +878,74 @@ struct ApplicationsManagerView: View {
                     }
                     .font(.system(size: 11, weight: .medium))
                     .foregroundColor(.white)
-                    .padding(.horizontal, 10).padding(.vertical, 7)
-                    .background(LinearGradient(colors: [Color(hex: "F7971E"), Color(hex: "FFD200")],
-                                              startPoint: .leading, endPoint: .trailing).cornerRadius(8))
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 7)
+                    .background(LinearGradient(colors: [Color(hex: "F7971E"), Color(hex: "FFD200")], startPoint: .leading, endPoint: .trailing).cornerRadius(8))
                 }
                 .buttonStyle(.plain)
                 .confirmationDialog("Clean All App Leftovers?", isPresented: $showBatchCleanConfirm, titleVisibility: .visible) {
-                    Button("Clean Leftovers from \(allAppsWithLeftovers) Apps", role: .destructive) {
+                    Button("Clean Selected Leftovers from \(appsWithLeftovers) Apps", role: .destructive) {
                         let cleaned = engine.batchCleanAllLeftovers()
-                        resultMessage = "Batch cleaned \(ByteCountFormatter.string(fromByteCount: cleaned, countStyle: .file)) from \(allAppsWithLeftovers) apps."
-                        showResult = true
+                        if cleaned == 0 {
+                            showFDAAlert = true
+                        } else {
+                            resultMessage = "Cleaned \(ByteCountFormatter.string(fromByteCount: cleaned, countStyle: .file)) from \(appsWithLeftovers) apps."
+                            showResult = true
+                        }
                     }
                     Button("Cancel", role: .cancel) {}
-                } message: { Text("This will remove all selected leftover data from \(allAppsWithLeftovers) apps.") }
+                } message: {
+                    Text("This will remove all selected leftover data (caches, logs) from \(appsWithLeftovers) apps.")
+                }
             }
 
             Spacer()
 
             if let app = selectedApp {
+                let leftoverSize = app.leftovers.filter(\.isSelected).reduce(Int64(0)) { $0 + $1.size }
                 let leftoverCount = app.leftovers.filter(\.isSelected).count
-                let leftoverSize  = app.leftovers.filter(\.isSelected).reduce(Int64(0)) { $0 + $1.size }
-
                 if leftoverCount > 0 {
-                    Text("\(leftoverCount) selected · \(ByteCountFormatter.string(fromByteCount: leftoverSize, countStyle: .file))")
-                        .font(.system(size: 11))
+                    Text("\(leftoverCount) leftovers (\(ByteCountFormatter.string(fromByteCount: leftoverSize, countStyle: .file)))")
+                        .font(.system(size: 12))
                         .foregroundColor(.secondary)
                 }
 
-                // Clean Selected Leftovers (new dedicated button)
-                Button { showCleanSelectedLeftoversConfirm = true } label: {
-                    HStack(spacing: 4) {
-                        Image(systemName: "trash")
-                        Text("Clean Leftovers")
+                // Reset button
+                Button {
+                    showResetConfirm = true
+                } label: {
+                    HStack(spacing: 6) {
+                        Image(systemName: "arrow.counterclockwise")
+                        Text("Reset App")
                     }
                     .font(.system(size: 11, weight: .semibold))
                     .foregroundColor(.white)
-                    .padding(.horizontal, 10).padding(.vertical, 7)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 8)
                     .background(
                         RoundedRectangle(cornerRadius: 8)
                             .fill(leftoverCount == 0
-                                  ? AnyShapeStyle(Color.gray.opacity(0.4))
-                                  : AnyShapeStyle(LinearGradient(colors: [Color(hex: "F7971E"), Color(hex: "FFD200")],
+                                  ? AnyShapeStyle(Color.gray)
+                                  : AnyShapeStyle(LinearGradient(colors: [Color(hex: "667EEA"), Color(hex: "764BA2")],
                                                                  startPoint: .leading, endPoint: .trailing)))
                     )
                 }
                 .buttonStyle(.plain)
                 .disabled(leftoverCount == 0)
-                .help(leftoverCount == 0 ? "Select leftover items to clean" : "Delete \(leftoverCount) selected leftovers")
-                .confirmationDialog("Clean Selected Leftovers for \(app.name)?", isPresented: $showCleanSelectedLeftoversConfirm, titleVisibility: .visible) {
-                    Button("Delete \(leftoverCount) Items (\(ByteCountFormatter.string(fromByteCount: leftoverSize, countStyle: .file)))", role: .destructive) {
-                        let cleaned = engine.resetApp(appId: app.id)
-                        resultMessage = "Cleaned \(ByteCountFormatter.string(fromByteCount: cleaned, countStyle: .file)) from \(app.name)."
-                        showResult = true
-                    }
-                    Button("Cancel", role: .cancel) {}
-                }
-
-                // Reset App
-                Button { showResetConfirm = true } label: {
-                    HStack(spacing: 4) {
-                        Image(systemName: "arrow.counterclockwise")
-                        Text("Reset")
-                    }
-                    .font(.system(size: 11, weight: .semibold))
-                    .foregroundColor(.white)
-                    .padding(.horizontal, 10).padding(.vertical, 7)
-                    .background(RoundedRectangle(cornerRadius: 8)
-                        .fill(LinearGradient(colors: [Color(hex: "667EEA"), Color(hex: "764BA2")],
-                                            startPoint: .leading, endPoint: .trailing)))
-                }
-                .buttonStyle(.plain)
                 .confirmationDialog("Reset \(app.name)?", isPresented: $showResetConfirm, titleVisibility: .visible) {
-                    Button("Reset App Data", role: .destructive) {
+                    Button("Reset (Delete Leftovers)", role: .destructive) {
                         let cleaned = engine.resetApp(appId: app.id)
-                        resultMessage = "Cleaned \(ByteCountFormatter.string(fromByteCount: cleaned, countStyle: .file)) from \(app.name)."
-                        showResult = true
+                        if cleaned == 0 {
+                            showFDAAlert = true
+                        } else {
+                            resultMessage = "Cleaned \(ByteCountFormatter.string(fromByteCount: cleaned, countStyle: .file)) from \(app.name)."
+                            showResult = true
+                        }
                     }
                     Button("Cancel", role: .cancel) {}
                 }
 
-                // Clear All Data
+                // Clear All Data (Deep Clean)
                 Button { showClearAllConfirm = true } label: {
                     HStack(spacing: 4) {
                         Image(systemName: "sparkles")
@@ -1197,39 +953,48 @@ struct ApplicationsManagerView: View {
                     }
                     .font(.system(size: 11, weight: .bold))
                     .foregroundColor(.white)
-                    .padding(.horizontal, 10).padding(.vertical, 7)
-                    .background(LinearGradient(colors: [Color(hex: "FF512F"), Color(hex: "DD2476")],
-                                              startPoint: .leading, endPoint: .trailing).cornerRadius(8))
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 8)
+                    .background(LinearGradient(colors: [Color(hex: "FF512F"), Color(hex: "DD2476")], startPoint: .leading, endPoint: .trailing).cornerRadius(8))
                 }
                 .buttonStyle(.plain)
                 .confirmationDialog("Clear All App Data for \(app.name)?", isPresented: $showClearAllConfirm, titleVisibility: .visible) {
-                    Button("Deep Clean (Leftovers + Scratch)", role: .destructive) {
+                    Button("Deep Clean (Delete Leftovers + Scratch)", role: .destructive) {
                         let cleaned = engine.clearAllAppData(appId: app.id)
-                        resultMessage = "Deep cleaned \(ByteCountFormatter.string(fromByteCount: cleaned, countStyle: .file)) from \(app.name)."
-                        showResult = true
+                        if cleaned == 0 {
+                            showFDAAlert = true
+                        } else {
+                            resultMessage = "Deep cleaned \(ByteCountFormatter.string(fromByteCount: cleaned, countStyle: .file)) from \(app.name)."
+                            showResult = true
+                        }
                     }
                     Button("Cancel", role: .cancel) {}
-                } message: { Text("This moves ALL detected caches, logs, preferences, and temporary files to Trash.") }
+                } message: { Text("This will move ALL detected caches, logs, preferences, and temporary files for this app to Trash when possible.") }
 
-                // Uninstall
-                Button { showUninstallConfirm = true } label: {
-                    HStack(spacing: 4) {
+                // Uninstall button
+                Button {
+                    showUninstallConfirm = true
+                } label: {
+                    HStack(spacing: 6) {
                         Image(systemName: "trash")
                         Text("Uninstall")
                     }
                     .font(.system(size: 11, weight: .bold))
                     .foregroundColor(.white)
-                    .padding(.horizontal, 10).padding(.vertical, 7)
-                    .background(RoundedRectangle(cornerRadius: 8)
-                        .fill(LinearGradient(colors: [Color(hex: "E94560"), Color(hex: "D0021B")],
-                                            startPoint: .leading, endPoint: .trailing)))
+                    .padding(.horizontal, 14)
+                    .padding(.vertical, 8)
+                    .background(
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(LinearGradient(colors: [Color(hex: "E94560"), Color(hex: "D0021B")],
+                                                 startPoint: .leading, endPoint: .trailing))
+                    )
                 }
                 .buttonStyle(.plain)
                 .confirmationDialog("Uninstall \(app.name)?", isPresented: $showUninstallConfirm, titleVisibility: .visible) {
                     Button("Uninstall (Move to Trash)", role: .destructive) {
                         let success = engine.uninstallApp(appId: app.id)
                         if success {
-                            resultMessage = "Moved \(app.name) to Trash."
+                            resultMessage = "Moved \(app.name) to Trash and cleaned selected leftovers."
                             selectedAppId = nil
                         } else {
                             resultMessage = "Could not uninstall \(app.name). It may be running."
@@ -1249,8 +1014,6 @@ struct ApplicationsManagerView: View {
 struct AppListRow: View {
     let app: InstalledApp
     let isSelected: Bool
-    var isMultiSelectMode: Bool = false
-    var isChecked: Bool = false
     let showLastUsed: Bool
     let onTap: () -> Void
     @State private var hovered = false
@@ -1258,25 +1021,6 @@ struct AppListRow: View {
     var body: some View {
         Button(action: onTap) {
             HStack(spacing: 10) {
-                // Checkbox in multi-select mode
-                if isMultiSelectMode {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 5)
-                            .fill(isChecked ? Color(hex: "6A11CB") : Color.gray.opacity(0.2))
-                            .frame(width: 18, height: 18)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 5)
-                                    .strokeBorder(isChecked ? Color(hex: "6A11CB") : Color.gray.opacity(0.4), lineWidth: 1.5)
-                            )
-                        if isChecked {
-                            Image(systemName: "checkmark")
-                                .font(.system(size: 9, weight: .bold))
-                                .foregroundColor(.white)
-                        }
-                    }
-                    .animation(.easeInOut(duration: 0.12), value: isChecked)
-                }
-
                 if let icon = app.icon {
                     Image(nsImage: icon)
                         .resizable()
@@ -1304,7 +1048,7 @@ struct AppListRow: View {
                             .foregroundColor(.secondary)
                     }
                 }
-                Spacer(minLength: 0)
+                Spacer()
                 if !app.leftovers.isEmpty {
                     Text("\(app.leftovers.count)")
                         .font(.system(size: 10, weight: .bold))
@@ -1318,15 +1062,9 @@ struct AppListRow: View {
             .padding(.vertical, 6)
             .background(
                 RoundedRectangle(cornerRadius: 8)
-                    .fill(isChecked ? Color(hex: "6A11CB").opacity(0.1) :
-                          isSelected ? Color(hex: "6A11CB").opacity(0.08) :
-                          hovered ? Color.gray.opacity(0.06) : Color.clear)
+                    .fill(isSelected ? Color(hex: "6A11CB").opacity(0.08) : (hovered ? Color.gray.opacity(0.06) : Color.clear))
             )
-            .overlay(
-                RoundedRectangle(cornerRadius: 8)
-                    .strokeBorder(isChecked ? Color(hex: "6A11CB").opacity(0.3) : Color.clear, lineWidth: 1)
-            )
-            .shadow(color: hovered ? Color.black.opacity(0.10) : .clear, radius: hovered ? 6 : 0, y: 2)
+            .shadow(color: hovered ? Color.black.opacity(0.12) : .clear, radius: hovered ? 8 : 0, y: 3)
             .scaleEffect(hovered ? 1.01 : 1.0)
             .contentShape(Rectangle())
         }

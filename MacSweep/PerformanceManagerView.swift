@@ -8,6 +8,7 @@ struct PerformanceManagerView: View {
     @State private var selectedGroup: PerformanceGroup.Kind? = .loginItems
     @State private var showResult = false
     @State private var resultMessage = ""
+    @State private var showFDAAlert = false
 
     @EnvironmentObject var navManager: NavigationManager
 
@@ -62,9 +63,17 @@ struct PerformanceManagerView: View {
         }
         .background(DS.bg)
         .alert("Action Complete", isPresented: $showResult) {
-            Button("OK") { engine.scanAll() }
+            Button("OK") { }
         } message: {
             Text(resultMessage)
+        }
+        .alert("Full Disk Access Required", isPresented: $showFDAAlert) {
+            Button("Open System Settings") {
+                NSWorkspace.shared.open(URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_AllFiles")!)
+            }
+            Button("Cancel", role: .cancel) { }
+        } message: {
+            Text("MacSweep needs Full Disk Access to manage startup items.\n\nGo to System Settings → Privacy & Security → Full Disk Access and enable MacSweep.")
         }
     }
 

@@ -133,6 +133,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         guard needsResize else { return }
 
+        // Position window in the center of the screen
         let targetRect = NSRect(
             x: visible.midX - targetWidth / 2,
             y: visible.midY - targetHeight / 2,

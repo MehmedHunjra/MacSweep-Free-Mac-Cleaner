@@ -5,6 +5,7 @@ struct PrivacyView: View {
     @ObservedObject var cleanEngine: CleanEngine
     @State private var showConfirm  = false
     @State private var showResult   = false
+    @State private var showFDAAlert = false
     @State private var isScanning   = false
     @State private var privacyItems: [PrivacyItem] = []
     @State private var scanDone     = false
@@ -43,6 +44,14 @@ struct PrivacyView: View {
             Button("Clear", role: .destructive) { clearPrivacyData() }
         } message: {
             Text("This will clear \(ByteCountFormatter.string(fromByteCount: selectedSize, countStyle: .file)) of privacy-sensitive data.")
+        }
+        .alert("Full Disk Access Required", isPresented: $showFDAAlert) {
+            Button("Open System Settings") {
+                NSWorkspace.shared.open(URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_AllFiles")!)
+            }
+            Button("Cancel", role: .cancel) { }
+        } message: {
+            Text("MacSweep needs Full Disk Access to clear privacy data.\n\nGo to System Settings → Privacy & Security → Full Disk Access and enable MacSweep.")
         }
     }
 
@@ -230,17 +239,25 @@ struct PrivacyView: View {
     }
 
     private func clearPrivacyData() {
-        let bytesToClear = selectedSize
         let fm = FileManager.default
+        var actualCleared: Int64 = 0
         for item in privacyItems where item.isSelected {
             let url = URL(fileURLWithPath: item.path)
-            if (try? fm.trashItem(at: url, resultingItemURL: nil)) == nil {
-                try? fm.removeItem(at: url)
+            let deleted: Bool
+            if (try? fm.trashItem(at: url, resultingItemURL: nil)) != nil {
+                deleted = true
+            } else if (try? fm.removeItem(at: url)) != nil {
+                deleted = true
+            } else {
+                deleted = false
             }
+            if deleted { actualCleared += item.size }
         }
-        if bytesToClear > 0 {
-            scanEngine.recordFreed(bytes: bytesToClear, description: "Privacy cleanup")
+        if actualCleared == 0 {
+            showFDAAlert = true
+            return
         }
+        scanEngine.recordFreed(bytes: actualCleared, description: "Privacy cleanup")
         DS.playCleanComplete()
         scanPrivacy()
     }

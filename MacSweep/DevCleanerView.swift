@@ -10,6 +10,7 @@ struct DevCleanerView: View {
     @State private var cleanedBytes: Int64 = 0
     @State private var showCleanSheet = false
     @State private var showResultSheet = false
+    @State private var showFDAAlert = false
     @State private var showNodeModulesSheet = false
     @State private var showBuildArtifactsSheet = false
     @State private var showCLIToolsSheet = false
@@ -451,7 +452,11 @@ struct DevCleanerView: View {
                         isCleaning = true
                         cleanedBytes = await devEngine.cleanSelected()
                         isCleaning = false
-                        showResultSheet = true
+                        if cleanedBytes == 0 {
+                            showFDAAlert = true
+                        } else {
+                            showResultSheet = true
+                        }
                     }
                 }
                 Button("Cancel", role: .cancel) {}
@@ -461,8 +466,15 @@ struct DevCleanerView: View {
             .sheet(isPresented: $showResultSheet) {
                 DevCleanResultSheet(cleanedBytes: cleanedBytes) {
                     showResultSheet = false
-                    devEngine.scanAll()
                 }
+            }
+            .alert("Full Disk Access Required", isPresented: $showFDAAlert) {
+                Button("Open System Settings") {
+                    NSWorkspace.shared.open(URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_AllFiles")!)
+                }
+                Button("Cancel", role: .cancel) { }
+            } message: {
+                Text("MacSweep needs Full Disk Access to delete dev caches.\n\nGo to System Settings → Privacy & Security → Full Disk Access and enable MacSweep.")
             }
         }
         .padding(.horizontal, 20)
