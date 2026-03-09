@@ -13,7 +13,7 @@
 
 ---
 
-[![Download MacSweep v3.3 — Free Mac Cleaner DMG](https://img.shields.io/badge/Download%20MacSweep%20v3.3-.DMG%20Installer-169677?style=for-the-badge&logo=apple&logoColor=white)](https://github.com/MehmedHunjra/MacSweep/releases/latest/download/MacSweep-Installer-v3.3.dmg)
+[![Download MacSweep v3.3 — Free Mac Cleaner DMG](https://img.shields.io/badge/Download%20MacSweep%20v3.3-.DMG%20Installer-169677?style=for-the-badge&logo=apple&logoColor=white)](https://github.com/MehmedHunjra/MacSweep/releases/latest/download/MacSweep-3.3.dmg)
 [![Support MacSweep on Ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/K3K21VE53X)
 
 > **macOS 13 Ventura or later · Apple Silicon (M1/M2/M3/M4) & Intel · Free forever · No subscription required**
