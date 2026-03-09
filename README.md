@@ -1,146 +1,168 @@
-# MacSweep — Free Open Source Mac Cleaner & Optimizer for macOS
+# MacSweep — Free Mac Cleaner & Optimizer | Best Free CleanMyMac Alternative (Open Source)
 
-> The best free alternative to CleanMyMac, CCleaner, and DaisyDisk — built in SwiftUI, open source, no subscription, no tracking.
+> **Free, open-source Mac cleaner for macOS** — Clean junk files, remove malware, optimize memory, and protect your privacy. The best free alternative to CleanMyMac X, CCleaner for Mac, and DaisyDisk. No subscription. No tracking. 100% open source.
 
-[![Build](https://github.com/MehmedHunjra/MacSweep/actions/workflows/build.yml/badge.svg)](https://github.com/MehmedHunjra/MacSweep/actions)
+[![Build Status](https://github.com/MehmedHunjra/MacSweep/actions/workflows/build.yml/badge.svg)](https://github.com/MehmedHunjra/MacSweep/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![macOS](https://img.shields.io/badge/macOS-13%2B-blue.svg)](#requirements)
-[![Swift](https://img.shields.io/badge/Swift-5.9-orange.svg)](#requirements)
-[![Version](https://img.shields.io/badge/version-3.3-brightgreen.svg)](https://github.com/MehmedHunjra/MacSweep/releases)
+[![macOS 13+](https://img.shields.io/badge/macOS-13%2B%20Ventura-blue.svg)](#system-requirements)
+[![Swift 5.9](https://img.shields.io/badge/Swift-5.9-orange.svg)](#system-requirements)
+[![Version 3.3](https://img.shields.io/badge/version-3.3-brightgreen.svg)](https://github.com/MehmedHunjra/MacSweep/releases)
+[![Open Source](https://img.shields.io/badge/Open%20Source-100%25-brightgreen.svg)](LICENSE)
+[![No Subscription](https://img.shields.io/badge/Subscription-None-success.svg)](#download--install)
 [![Made by besttech.pk](https://img.shields.io/badge/Made%20by-besttech.pk-teal.svg)](https://besttech.pk)
 
 ---
 
-[![Download MacSweep v3.3](https://img.shields.io/badge/Download%20MacSweep%20v3.3-.DMG%20Installer-169677?style=for-the-badge&logo=apple&logoColor=white)](https://github.com/MehmedHunjra/MacSweep/releases/latest/download/MacSweep-Installer-v3.3.dmg)
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/K3K21VE53X)
+[![Download MacSweep v3.3 — Free Mac Cleaner DMG](https://img.shields.io/badge/Download%20MacSweep%20v3.3-.DMG%20Installer-169677?style=for-the-badge&logo=apple&logoColor=white)](https://github.com/MehmedHunjra/MacSweep/releases/latest/download/MacSweep-Installer-v3.3.dmg)
+[![Support MacSweep on Ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/K3K21VE53X)
 
-> macOS 13 Ventura or later — Apple Silicon & Intel — No subscription required
+> **macOS 13 Ventura or later · Apple Silicon (M1/M2/M3/M4) & Intel · Free forever · No subscription required**
 
 ---
 
-**MacSweep** is a powerful, fully open source Mac cleaning and optimization app for macOS 13 Ventura and later. It covers everything — system junk cleaning, duplicate removal, malware scanning, memory optimization, startup management, disk visualization, browser privacy, and real-time security protection — all in one native SwiftUI app with no paywalls.
+## What is MacSweep?
+
+**MacSweep** is a **free, open-source Mac cleaner and security app** for macOS 13 Ventura and later. It is the most complete free alternative to CleanMyMac X — covering everything CleanMyMac does and more, at zero cost with no subscription, no paywall, and no data tracking.
+
+Whether you want to **free up disk space on your Mac**, **remove Mac malware**, **clean junk files**, **speed up your Mac**, or **protect your privacy**, MacSweep does it all in one native SwiftUI app — no third-party frameworks, no background telemetry, no hidden costs.
+
+**Key highlights:**
+- Completely **free** — no trial, no paywall, no in-app purchases
+- Fully **open source** (MIT) — inspect every line of code
+- **No subscription** — download once, use forever
+- **No tracking** — zero analytics, zero data collection
+- **Native SwiftUI** — built for macOS, not ported from iOS or Electron
+- Works on **Apple Silicon** (M1/M2/M3/M4) **and Intel** Macs
 
 ---
 
 ## Screenshots
 
-### Main App
+### Mac Cleaner — Main App
 
-| Dashboard | Smart Scan | Smart Scan Results |
-| --------- | ---------- | ------------------ |
-| ![Dashboard](screenshots/dashboard.png) | ![Smart Scan](screenshots/smart-scan.png) | ![Smart Scan Results](screenshots/smart-scan-results.png) |
+| Dashboard — Mac System Overview | Smart Scan — One-Click Mac Cleaner | Smart Scan Results |
+| ------------------------------- | ---------------------------------- | ------------------ |
+| ![MacSweep Dashboard — free mac cleaner overview](screenshots/dashboard.png) | ![MacSweep Smart Scan — clean mac junk files](screenshots/smart-scan.png) | ![MacSweep Smart Scan Results — junk files found](screenshots/smart-scan-results.png) |
 
-| Malware Scanner | Space Lens Map | App Manager |
-| --------------- | -------------- | ----------- |
-| ![Malware Scanner](screenshots/malware-scanner.png) | ![Space Lens](screenshots/space-lens-map.png) | ![App Manager](screenshots/app-manager.png) |
+| Malware Scanner — Free Mac Security | Space Lens — Mac Disk Space Analyzer | App Manager — Mac App Uninstaller |
+| ------------------------------------ | ------------------------------------- | ---------------------------------- |
+| ![MacSweep Malware Scanner — free mac malware removal](screenshots/malware-scanner.png) | ![MacSweep Space Lens — mac disk usage map](screenshots/space-lens-map.png) | ![MacSweep App Manager — mac app uninstaller](screenshots/app-manager.png) |
 
-| Dev Cleaner | Dev Cleaner Scanning | Applications |
-| ----------- | -------------------- | ------------ |
-| ![Dev Cleaner](screenshots/dev-cleaner.png) | ![Dev Cleaner Scan](screenshots/dev-cleaner-scan.png) | ![Applications](screenshots/applications.png) |
+| Dev Cleaner — Xcode Cache Cleaner | Dev Cleaner Scanning | Applications Manager |
+| --------------------------------- | -------------------- | -------------------- |
+| ![MacSweep Dev Cleaner — xcode derived data cleaner](screenshots/dev-cleaner.png) | ![MacSweep Dev Cleaner scanning Xcode caches](screenshots/dev-cleaner-scan.png) | ![MacSweep Applications Manager — sort apps by size](screenshots/applications.png) |
 
-| Settings General | Settings About | Space Lens |
-| ---------------- | -------------- | ---------- |
-| ![Settings](screenshots/settings.png) | ![About](screenshots/settings-about.png) | ![Space Lens](screenshots/space-lens.png) |
+| Settings | About MacSweep | Space Lens Disk Map |
+| -------- | -------------- | ------------------- |
+| ![MacSweep Settings](screenshots/settings.png) | ![MacSweep About page](screenshots/settings-about.png) | ![MacSweep Space Lens — interactive disk treemap](screenshots/space-lens.png) |
 
-### Menu Bar
+### Mac Menu Bar Cleaner
 
-| Overview | Quick Actions + All Tools | Running Apps |
-| -------- | ------------------------- | ------------ |
-| ![Menu Bar Overview](screenshots/menubar-overview.png) | ![Menu Bar Actions](screenshots/menubar-actions.png) | ![Menu Bar Apps](screenshots/menubar-apps.png) |
-
----
-
-## Why MacSweep vs Other Mac Cleaners?
-
-| Feature | MacSweep | CleanMyMac X | CCleaner | DaisyDisk |
-| ------- | -------- | ------------ | -------- | --------- |
-| Free | **Yes** | No ($39.95/yr) | Partial | No ($9.99) |
-| Open Source | **Yes** | No | No | No |
-| No Subscription | **Yes** | No | No | Yes |
-| Malware Scanner | **Yes** | Yes | No | No |
-| Real-Time Protection | **Yes** | Yes | No | No |
-| System Integrity Monitor | **Yes** | No | No | No |
-| Network Monitor | **Yes** | No | No | No |
-| Ransomware Guard | **Yes** | No | No | No |
-| Menu Bar Quick Actions | **Yes** | Yes | No | No |
-| Space Lens / Disk Map | **Yes** | Yes | No | **Yes** |
-| Dev Cleaner (Xcode/npm/pip) | **Yes** | Yes | No | No |
-| App Manager | **Yes** | Yes | No | No |
-| No Tracking / No Analytics | **Yes** | Unknown | No | Yes |
-| Native SwiftUI | **Yes** | No | No | No |
+| Menu Bar Overview — Live Mac Stats | Quick Actions — 24 Mac Optimization Tools | Running Apps Monitor |
+| ---------------------------------- | ------------------------------------------ | -------------------- |
+| ![MacSweep menu bar — live CPU RAM disk stats](screenshots/menubar-overview.png) | ![MacSweep quick actions — flush DNS free RAM empty trash](screenshots/menubar-actions.png) | ![MacSweep running apps — mac memory monitor](screenshots/menubar-apps.png) |
 
 ---
 
-## Features
+## MacSweep vs CleanMyMac X vs CCleaner vs DaisyDisk — Full Comparison
 
-### Cleaning & Storage
+Looking for a **free CleanMyMac alternative**? Here's how MacSweep compares to the most popular Mac cleaning tools:
 
-- **Smart Scan** — one-click intelligent scan across all junk categories
-- **System Junk** — caches, logs, temp files, mail attachments, photo junk
-- **Large Files** — find files taking up the most disk space
-- **Duplicate Finder** — detect and remove duplicate files
-- **App Leftovers** — clean leftover data from uninstalled apps
-- **Browser Privacy** — clear cookies, caches, history from Chrome, Safari, Firefox, Brave, Edge
-- **Dev Cleaner** — Xcode DerivedData, simulator caches, npm/pip/gem packages, IDE caches
-- **Space Lens** — interactive disk usage treemap to see exactly what is using space
+| Feature | **MacSweep** (Free) | CleanMyMac X ($39.95/yr) | CCleaner (Freemium) | DaisyDisk ($9.99) |
+| ------- | :-----------------: | :----------------------: | :-----------------: | :---------------: |
+| **Price** | **Free** | $39.95/yr | Freemium | $9.99 one-time |
+| **Open Source** | **Yes** | No | No | No |
+| **No Subscription** | **Yes** | No | No | Yes |
+| **Junk File Cleaner** | **Yes** | Yes | Yes | No |
+| **Malware Scanner** | **Yes** | Yes | No | No |
+| **Real-Time Protection** | **Yes** | Yes | No | No |
+| **Ransomware Guard** | **Yes** | No | No | No |
+| **System Integrity Monitor** | **Yes** | No | No | No |
+| **Network Monitor** | **Yes** | No | No | No |
+| **Adware Cleaner** | **Yes** | Yes | No | No |
+| **Browser Privacy Cleaner** | **Yes** | Yes | Yes | No |
+| **Memory Optimizer** | **Yes** | Yes | No | No |
+| **Startup Manager** | **Yes** | Yes | No | No |
+| **Disk Space Analyzer / Map** | **Yes** | Yes | No | **Yes** |
+| **Duplicate File Finder** | **Yes** | Yes | No | No |
+| **Dev Cleaner (Xcode/npm/pip)** | **Yes** | Yes | No | No |
+| **App Uninstaller** | **Yes** | Yes | No | No |
+| **Menu Bar Live Stats** | **Yes** | Yes | No | No |
+| **No Tracking / No Analytics** | **Yes** | Unknown | No | Yes |
+| **Native SwiftUI** | **Yes** | No | No | No |
+| **Apple Silicon Optimized** | **Yes** | Yes | No | Yes |
 
-### Performance
-
-- **Memory Optimizer** — view top memory consumers and purge inactive RAM
-- **Startup Optimizer** — manage login items, launch agents, launch daemons
-- **Maintenance** — run macOS daily/weekly/monthly scripts, repair permissions, flush caches
-- **App Manager** — view all installed apps by size and last-used date, remove with leftovers
-
-### Security
-
-- **Malware Scanner** — heuristic deep scan for suspicious files, scripts, and auto-run threats
-- **Real-Time Protection** — FSEvents-based live monitoring of Downloads, Desktop, Documents
-- **Adware Cleaner** — remove browser extensions, login items, and launch agents linked to adware
-- **Ransomware Guard** — file-change rate monitoring with encryption pattern detection
-- **Network Monitor** — live view of all active TCP connections with suspicious port flagging
-- **Quarantine Manager** — safely quarantine threats and restore false positives
-- **System Integrity Monitor** — scan launch agents, daemons, hosts file, SSH config, kernel extensions
-
-### Privacy
-
-- **Privacy Cleaner** — erase recent document lists, clipboard history, browser traces
-- **Privacy & Protection** — scan and clear browser saved passwords, autofill, download history
-
-### Menu Bar App
-
-- Always-on menu bar icon with live CPU, RAM, disk, and network stats
-- **Quick Actions panel** — 24 instant actions (Empty Trash, Free RAM, Flush DNS, and more)
-- **All Tools grid** — launch any of the 21 tools directly from the menu bar
+> **Bottom line:** MacSweep is the only Mac cleaner that is completely free, fully open source, has no subscription, and includes malware scanning + real-time protection — features that CleanMyMac X charges $40/year for.
 
 ---
 
-## Download & Install
+## Features — Complete Mac Cleaning & Optimization Suite
 
-### Method 1 — Homebrew (Recommended — Zero Warnings)
+### Junk File Cleaner — Free Up Disk Space on Mac
+
+- **Smart Scan** — one-click intelligent scan that detects all junk across every category and shows exactly how much space you can recover
+- **System Junk Cleaner** — remove macOS caches, system logs, temp files, mail attachments, and photo library junk
+- **Large Files Finder** — instantly locate the biggest files consuming your Mac's storage
+- **Duplicate File Finder** — detect and safely remove duplicate files across your entire drive
+- **App Leftovers Cleaner** — find and remove support files, caches, and preferences left behind by deleted apps
+- **Browser Cache Cleaner** — clear cookies, caches, browsing history, and saved passwords from Safari, Chrome, Firefox, Brave, and Edge
+- **Dev Cache Cleaner** — clean Xcode DerivedData, iOS Simulator caches, npm/yarn node_modules, pip packages, gem caches, and IDE caches (VS Code, JetBrains)
+- **Space Lens** — interactive disk usage treemap showing every folder and file visually — like DaisyDisk but free
+
+### Mac Performance Optimizer
+
+- **Memory Optimizer** — identify the top RAM consumers and purge inactive memory to speed up your Mac
+- **Startup Manager / Login Items** — manage startup apps, launch agents, and launch daemons to improve Mac boot speed
+- **Maintenance Scripts** — run macOS daily, weekly, and monthly maintenance scripts; repair disk permissions; flush DNS cache; rebuild Spotlight index
+- **App Manager** — view all installed Mac apps sorted by size or last-used date; uninstall with all leftover files removed
+
+### Mac Security & Malware Removal — Free
+
+- **Mac Malware Scanner** — deep heuristic scan for suspicious files, hidden scripts, auto-run threats, and known malware patterns
+- **Real-Time Mac Protection** — FSEvents-based live monitoring of your Downloads, Desktop, and Documents folders — catches threats the moment they arrive
+- **Adware Cleaner for Mac** — remove browser hijackers, suspicious extensions, adware login items, and launch agents linked to adware
+- **Ransomware Guard** — monitors file-change rate with encryption pattern detection to stop ransomware before it spreads
+- **Network Monitor** — live view of all active TCP connections with automatic flagging of suspicious ports and known malicious IPs
+- **Quarantine Manager** — safely isolate detected threats and restore false positives with one click
+- **System Integrity Monitor** — scan launch agents, launch daemons, hosts file modifications, SSH config changes, and unauthorized kernel extensions
+
+### Mac Privacy Cleaner
+
+- **Privacy Cleaner** — erase recent document history, clipboard contents, browser traces, and app usage logs
+- **Browser Privacy Sweep** — clear saved passwords, autofill data, download history, and form data from all major browsers
+
+### Menu Bar Mac Cleaner
+
+- Live menu bar icon showing real-time CPU%, RAM usage, free disk space, and network speed (turns red when CPU > 80%)
+- **24 Quick Actions** — Empty Trash, Purge RAM, Flush DNS, Kill All Simulators, Clear Clipboard, and more — all from the menu bar
+- **All Tools Grid** — launch any of MacSweep's 21 tools directly from the menu bar without opening the main window
+
+---
+
+## Download & Install — Free Mac Cleaner
+
+### Method 1 — Homebrew (Recommended — No Gatekeeper Warnings)
 
 ```bash
 brew install --cask macsweep
 ```
 
-Homebrew handles everything automatically. No Gatekeeper warnings, no Terminal tricks.
-[Install Homebrew](https://brew.sh) first if you don't have it.
+Homebrew automatically handles installation with no Gatekeeper warnings and no Terminal tricks needed. [Install Homebrew](https://brew.sh) first if you don't have it.
 
 ### Method 2 — One-Line Terminal Install
-
-Download the DMG, then open Terminal and paste:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/MehmedHunjra/MacSweep/main/install.sh | bash
 ```
 
-Removes quarantine, installs to `/Applications`, and opens MacSweep automatically.
+Downloads the DMG, removes quarantine, installs to `/Applications`, and opens MacSweep automatically.
 
 ### Method 3 — Download DMG Manually
 
 1. Click the **Download MacSweep v3.3** button above
-2. Open **System Settings → Privacy & Security**
-3. Scroll down → click **Open Anyway** next to MacSweep
-4. Drag MacSweep to Applications
+2. Open the `.dmg` and drag MacSweep to Applications
+3. Open **System Settings → Privacy & Security**
+4. Scroll down and click **Open Anyway** next to MacSweep
 
 ### Method 4 — Build from Source
 
@@ -150,35 +172,47 @@ cd MacSweep
 bash build-dmg.sh
 ```
 
-### "App is damaged" error?
-
-macOS blocks unsigned apps downloaded from the internet. Fix it in one command:
-
-```bash
-xattr -cr /Applications/MacSweep.app
-```
-
-### Build from Xcode
+### Build in Xcode
 
 ```bash
 git clone https://github.com/MehmedHunjra/MacSweep.git
 open MacSweep.xcodeproj
 ```
 
-Select **MacSweep** scheme → **My Mac** → press **Run** (⌘R). No warnings when built locally.
+Select the **MacSweep** scheme → **My Mac** destination → press **Run** (⌘R). Builds with no warnings locally.
 
 ---
 
-## Requirements
+## Troubleshooting
+
+### "MacSweep is damaged and can't be opened" / Gatekeeper Warning
+
+macOS Gatekeeper blocks unsigned apps downloaded from the web. Fix it in one command:
+
+```bash
+xattr -cr /Applications/MacSweep.app
+```
+
+Or use the Homebrew install method above, which bypasses this entirely.
+
+### macOS says MacSweep can't be verified
+
+Same fix as above. This happens because MacSweep is distributed without an Apple Developer certificate ($99/yr). The source code is fully open — you can build it yourself to avoid this.
+
+---
+
+## System Requirements
 
 | | |
 | -- | -- |
-| **macOS** | 13 Ventura or later |
-| **Xcode** | 15 or later (for building) |
-| **Swift** | 5.9+ |
-| **Architecture** | Apple Silicon & Intel |
+| **macOS** | 13 Ventura or later (14 Sonoma, 15 Sequoia supported) |
+| **Architecture** | Apple Silicon (M1, M2, M3, M4) and Intel |
+| **Xcode** | 15 or later (only needed to build from source) |
+| **Swift** | 5.9+ (only needed to build from source) |
+| **Disk Space** | ~12 MB |
+| **RAM** | ~50 MB typical usage |
 
-No third-party dependencies. No Swift Package Manager packages required.
+No third-party dependencies. No Swift Package Manager packages required. Zero external frameworks.
 
 ---
 
@@ -186,61 +220,90 @@ No third-party dependencies. No Swift Package Manager packages required.
 
 ```text
 MacSweep/
-├── MacSweepApp.swift              # App entry, MenuBarExtra, live stats label
-├── ContentView.swift              # Main window, section routing
-├── Models.swift                   # AppSettings, AppSection, design system (DS)
-├── NavigationManager.swift        # Navigation history & routing
-├── ScanEngine.swift               # Disk, CPU, RAM, network stats
+├── MacSweepApp.swift              # App entry point, MenuBarExtra, live stats label
+├── ContentView.swift              # Main window shell, section routing
+├── Models.swift                   # AppSettings, AppSection enum, design system (DS)
+├── NavigationManager.swift        # Navigation history & routing (24 sections)
+├── ScanEngine.swift               # Disk, CPU, RAM, network live metrics + junk scanning
 ├── CleanEngine.swift              # File deletion engine
-├── SecurityEngine.swift           # Malware, Adware, Network, Ransomware,
-│                                  # Realtime, Integrity, Notifications
+├── SecurityEngine.swift           # Malware, Adware, Network Monitor, Ransomware Guard,
+│                                  # Real-Time Protection, Integrity Monitor, Quarantine
 │
-├── SmartScanView.swift
-├── SystemJunkView.swift
-├── LargeFilesView.swift
-├── DuplicateFinderView.swift
-├── BrowserCleanerView.swift
-├── AppLeftoversView.swift
-├── DevCleanerView.swift
-├── SpaceLensView.swift
+├── SmartScanView.swift            # One-click smart scan
+├── SystemJunkView.swift           # System junk cleaner UI
+├── LargeFilesView.swift           # Large files finder
+├── DuplicateFinderView.swift      # Duplicate file finder
+├── BrowserCleanerView.swift       # Browser cache & privacy cleaner
+├── AppLeftoversView.swift         # App leftovers cleaner
+├── DevCleanerView.swift           # Xcode/npm/pip dev cache cleaner
+├── SpaceLensView.swift            # Interactive disk usage treemap
 │
-├── MemoryOptimizerView.swift
-├── PerformanceManagerView.swift
-├── MaintenanceView.swift
-├── ApplicationsManagerView.swift
+├── MemoryOptimizerView.swift      # RAM optimizer
+├── PerformanceManagerView.swift   # Startup manager & performance
+├── MaintenanceView.swift          # macOS maintenance scripts
+├── ApplicationsManagerView.swift  # App manager & uninstaller
 │
-├── MalwareScannerView.swift
-├── RealtimeProtectionView.swift
-├── AdwareCleanerView.swift
-├── RansomwareGuardView.swift
-├── NetworkMonitorView.swift
-├── QuarantineManagerView.swift
-├── IntegrityMonitorView.swift
+├── MalwareScannerView.swift       # Malware scanner UI
+├── RealtimeProtectionView.swift   # Real-time file system protection
+├── AdwareCleanerView.swift        # Adware detection & removal
+├── RansomwareGuardView.swift      # Ransomware monitoring
+├── NetworkMonitorView.swift       # Live TCP connection monitor
+├── QuarantineManagerView.swift    # Quarantine & restore
+├── IntegrityMonitorView.swift     # System integrity scanner
 │
-├── PrivacyView.swift
-├── ProtectionManagerView.swift
-├── DashboardView.swift
-├── SidebarView.swift
-├── MenuBarView.swift
-├── SettingsView.swift
-└── Assets.xcassets/
+├── PrivacyView.swift              # Privacy cleaner
+├── ProtectionManagerView.swift    # Security overview hub
+├── DashboardView.swift            # Main dashboard & freed-space history
+├── SidebarView.swift              # 24-section navigation sidebar
+├── MenuBarView.swift              # Menu bar popover & quick actions
+├── SettingsView.swift             # Full settings & preferences
+└── Assets.xcassets/               # App icons and images
 ```
 
 ---
 
-## Built with Vibe Coding — AI-Powered Development (2026)
+## Frequently Asked Questions (FAQ)
 
-MacSweep was built in **2026** using **vibe coding** — writing software by describing ideas in plain English and iterating with AI tools. No prior macOS or Swift expertise was required.
+**Is MacSweep really free?**
+Yes. MacSweep is 100% free — no trial period, no in-app purchases, no subscription, no premium tier. It is MIT-licensed open source software.
+
+**Is MacSweep safe to use?**
+Yes. The full source code is publicly available on GitHub — you can review every line before running it. Unlike closed-source cleaners, there are no hidden behaviors.
+
+**Does MacSweep collect any data?**
+No. MacSweep has zero analytics, zero telemetry, and makes no network requests except to check for app updates on GitHub Releases (opt-out available in Settings).
+
+**Does MacSweep work on Apple Silicon (M1/M2/M3/M4)?**
+Yes. MacSweep is compiled as a universal binary and runs natively on both Apple Silicon and Intel Macs.
+
+**What macOS versions does MacSweep support?**
+macOS 13 Ventura, macOS 14 Sonoma, and macOS 15 Sequoia.
+
+**Is MacSweep a good CleanMyMac X alternative?**
+Yes. MacSweep covers every major feature of CleanMyMac X — junk cleaning, malware scanning, real-time protection, disk analysis, memory optimization, startup management — for free, with no subscription.
+
+**Can MacSweep replace CCleaner on Mac?**
+Yes. MacSweep provides everything CCleaner for Mac does (junk cleaning, browser privacy, startup manager) plus adds malware scanning, real-time protection, and a disk space visualizer.
+
+**Does MacSweep have a malware scanner?**
+Yes. MacSweep includes a full heuristic malware scanner, real-time file system protection, adware cleaner, ransomware guard, and a system integrity monitor — all free.
+
+---
+
+## Built with AI-Assisted Development (Vibe Coding, 2026)
+
+MacSweep was built in **2026** using **vibe coding** — describing ideas in plain English and iterating with AI tools. No prior macOS or Swift expertise was needed to ship a production-quality native Mac app.
 
 **AI Tools Used:**
 
 | Tool | Role |
 | ---- | ---- |
-| **Claude Code** (Anthropic) | Primary architecture, SwiftUI views, all engines, bug fixes, CI/CD |
+| **Claude Code** (Anthropic) | Primary architecture, all SwiftUI views, all engines, bug fixes, CI/CD setup |
 | **OpenAI Codex** | Code suggestions, logic patterns, algorithm optimization |
-| **Google Gemini** | Research, API references, problem solving |
+| **Google Gemini** | Research, Apple API references, problem-solving |
+| **Google Antigravity** | Agent-first IDE — agentic task orchestration, multi-agent code workflows |
 
-> This project proves that anyone — with the right AI tools and determination — can build a professional, fully functional native Mac application from scratch in 2026.
+> This project proves that anyone — with the right AI tools and determination — can build a professional, fully featured native Mac application from scratch in 2026.
 
 ---
 
@@ -252,34 +315,28 @@ MacSweep was built in **2026** using **vibe coding** — writing software by des
 | **Claude Code** — Anthropic | AI Pair Programmer — architecture, SwiftUI, engines, CI |
 | **OpenAI Codex** | AI Code Assistant — logic, algorithms |
 | **Google Gemini** | AI Research Assistant |
-| **besttech.pk** | Software House — Made with love in 2026 |
+| **Google Antigravity** — Google | Agent-First AI IDE — agentic code orchestration, multi-agent workflows |
 
 ---
 
-## Made by besttech.pk
+## About besttech.pk
 
-**MacSweep** is a product of **[besttech.pk](https://besttech.pk)** — a software house and digital agency building apps, websites, and digital products.
+**MacSweep** is developed by **[besttech.pk](https://besttech.pk)** — a software studio specializing in native app development, web platforms, and digital product design.
 
-besttech.pk is a place where developers, designers, and entrepreneurs come together to build software, websites, and digital marketing solutions. If you have an idea — we can help you build it.
+We build production-grade software across macOS, iOS, and the web. If you have a product idea, [get in touch](https://besttech.pk).
 
 ---
 
 ## Contributing
 
-We welcome contributions from developers worldwide. Read [CONTRIBUTING.md](CONTRIBUTING.md) before submitting a PR.
+Contributions are welcome from developers worldwide. Read [CONTRIBUTING.md](CONTRIBUTING.md) before submitting a PR.
 
 **Quick start:**
 
 1. Fork the repo
 2. Create a branch: `git checkout -b feature/your-idea`
-3. Make your changes
-4. Open a Pull Request
-
----
-
-## Keywords
-
-mac cleaner, mac optimizer, macos cleaner, free mac cleaner, open source mac cleaner, cleanmymac alternative, ccleaner mac, macos junk cleaner, mac malware scanner, mac privacy cleaner, mac duplicate finder, mac memory optimizer, mac startup manager, mac disk cleaner, mac app cleaner, system junk cleaner, macos performance, swiftui mac app, mac security app, mac cleaner 2026
+3. Make your changes following the code conventions in [CLAUDE.md](CLAUDE.md)
+4. Open a Pull Request against `main`
 
 ---
 
@@ -291,8 +348,11 @@ MIT License — free to use, modify, and distribute. See [LICENSE](LICENSE).
 
 ## Disclaimer
 
-MacSweep performs real system operations (file deletion, DNS flush, memory purge, system scans). Always review items before confirming any cleaning operation. The authors are not responsible for data loss caused by misuse.
+MacSweep performs real system operations including file deletion, DNS cache flushing, memory purging, and system scanning. Always review items before confirming any cleaning operation. The authors are not responsible for data loss caused by misuse.
 
 ---
 
-Made with love by [besttech.pk](https://besttech.pk) — Built in 2026 using AI vibe coding
+<!-- SEO Keywords -->
+<!-- mac cleaner free, best free mac cleaner, free mac cleaner 2026, mac cleaner open source, cleanmymac alternative free, cleanmymac x alternative, cleanmymac alternative open source, free cleanmymac replacement, ccleaner for mac free, ccleaner mac alternative, daisy disk alternative free, mac optimizer free, mac junk cleaner, mac cache cleaner, mac disk cleaner, mac system cleaner, macos cleaner, mac cleaner no subscription, mac malware scanner free, mac malware removal free, mac adware remover, mac ransomware protection, mac real-time protection, mac security scanner, mac privacy cleaner, mac browser cleaner, mac duplicate finder free, mac memory optimizer, mac startup manager, mac login items manager, mac disk space analyzer, mac disk usage map, space lens mac, mac app uninstaller free, xcode cache cleaner, xcode derived data cleaner, npm cache cleaner mac, macos ventura cleaner, macos sonoma cleaner, macos sequoia cleaner, apple silicon mac cleaner, m1 mac cleaner, m2 mac cleaner, swiftui mac app open source, mac cleaner github, open source macos utility, mac performance optimizer, speed up mac free, free up disk space mac, mac system junk, mac temp files cleaner, mac log files cleaner -->
+
+Built in 2026 by [besttech.pk](https://besttech.pk) using AI-assisted development
