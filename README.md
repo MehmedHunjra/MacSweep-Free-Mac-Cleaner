@@ -1,6 +1,6 @@
-# MacSweep — Free Mac Cleaner & Optimizer | Best Free CleanMyMac Alternative (Open Source)
+# MacSweep Free Mac Cleaner — Open Source Mac Optimizer & Security Tool | Best Free CleanMyMac Alternative
 
-> **Free, open-source Mac cleaner for macOS** — Clean junk files, remove malware, optimize memory, and protect your privacy. The best free alternative to CleanMyMac X, CCleaner for Mac, and DaisyDisk. No subscription. No tracking. 100% open source.
+> **MacSweep Free Mac Cleaner** — The best free, open-source Mac cleaner for macOS. Clean junk files, remove malware, optimize memory, and protect your privacy. The #1 free alternative to CleanMyMac X, CCleaner for Mac, and DaisyDisk. No subscription. No tracking. 100% open source.
 
 [![Build Status](https://github.com/MehmedHunjra/MacSweep/actions/workflows/build.yml/badge.svg)](https://github.com/MehmedHunjra/MacSweep/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
@@ -21,11 +21,11 @@
 
 ---
 
-## What is MacSweep?
+## What is MacSweep Free Mac Cleaner?
 
-**MacSweep** is a **free, open-source Mac cleaner and security app** for macOS 13 Ventura and later. It is the most complete free alternative to CleanMyMac X — covering everything CleanMyMac does and more, at zero cost with no subscription, no paywall, and no data tracking.
+**MacSweep Free Mac Cleaner** is a **free, open-source Mac cleaner and security app** for macOS 13 Ventura and later. It is the most complete free alternative to CleanMyMac X — covering everything CleanMyMac does and more, at zero cost with no subscription, no paywall, and no data tracking.
 
-Whether you want to **free up disk space on your Mac**, **remove Mac malware**, **clean junk files**, **speed up your Mac**, or **protect your privacy**, MacSweep does it all in one native SwiftUI app — no third-party frameworks, no background telemetry, no hidden costs.
+Whether you want to **free up disk space on your Mac**, **remove Mac malware**, **clean junk files**, **speed up your Mac**, or **protect your privacy**, MacSweep Free Mac Cleaner does it all in one native SwiftUI app — no third-party frameworks, no background telemetry, no hidden costs.
 
 **Key highlights:**
 - Completely **free** — no trial, no paywall, no in-app purchases
@@ -140,15 +140,17 @@ Looking for a **free CleanMyMac alternative**? Here's how MacSweep compares to t
 
 ---
 
-## Download & Install — Free Mac Cleaner
+## Download & Install — MacSweep Free Mac Cleaner
 
-### Method 1 — Homebrew (Recommended — No Gatekeeper Warnings)
+> **Slow download?** GitHub CDN can occasionally be slow. Try the **ZIP option** (faster) or use **Homebrew** for the most reliable install. All releases: [github.com/MehmedHunjra/MacSweep/releases](https://github.com/MehmedHunjra/MacSweep/releases)
+
+### Method 1 — Homebrew (Recommended — Fastest & No Gatekeeper Warnings)
 
 ```bash
 brew install --cask macsweep
 ```
 
-Homebrew automatically handles installation with no Gatekeeper warnings and no Terminal tricks needed. [Install Homebrew](https://brew.sh) first if you don't have it.
+Homebrew automatically handles installation with no Gatekeeper warnings and no Terminal tricks needed. This is the **fastest and most reliable** install method. [Install Homebrew](https://brew.sh) first if you don't have it.
 
 ### Method 2 — One-Line Terminal Install
 
@@ -161,11 +163,22 @@ Downloads the DMG, removes quarantine, installs to `/Applications`, and opens Ma
 ### Method 3 — Download DMG Manually
 
 1. Click the **Download MacSweep v3.3** button above
-2. Open the `.dmg` and drag MacSweep to Applications
-3. Open **System Settings → Privacy & Security**
-4. Scroll down and click **Open Anyway** next to MacSweep
+2. **Prefer the ZIP version** if your download is slow — it downloads faster and contains the same DMG inside
+3. Open the `.dmg` and drag MacSweep to Applications
+4. Open **System Settings → Privacy & Security**
+5. Scroll down and click **Open Anyway** next to MacSweep
 
-### Method 4 — Build from Source
+> **If download is slow:** GitHub CDN speeds vary by region. Try at a different time, use Homebrew, or use the GitHub CLI: `gh release download v3.3 --repo MehmedHunjra/MacSweep`
+
+### Method 4 — GitHub CLI (Fast, No Browser Needed)
+
+```bash
+gh release download v3.3 --repo MehmedHunjra/MacSweep --pattern "*.dmg"
+```
+
+Requires [GitHub CLI](https://cli.github.com). Often faster than browser download.
+
+### Method 5 — Build from Source
 
 ```bash
 git clone https://github.com/MehmedHunjra/MacSweep.git
@@ -354,6 +367,6 @@ MacSweep performs real system operations including file deletion, DNS cache flus
 ---
 
 <!-- SEO Keywords -->
-<!-- mac cleaner free, best free mac cleaner, free mac cleaner 2026, mac cleaner open source, cleanmymac alternative free, cleanmymac x alternative, cleanmymac alternative open source, free cleanmymac replacement, ccleaner for mac free, ccleaner mac alternative, daisy disk alternative free, mac optimizer free, mac junk cleaner, mac cache cleaner, mac disk cleaner, mac system cleaner, macos cleaner, mac cleaner no subscription, mac malware scanner free, mac malware removal free, mac adware remover, mac ransomware protection, mac real-time protection, mac security scanner, mac privacy cleaner, mac browser cleaner, mac duplicate finder free, mac memory optimizer, mac startup manager, mac login items manager, mac disk space analyzer, mac disk usage map, space lens mac, mac app uninstaller free, xcode cache cleaner, xcode derived data cleaner, npm cache cleaner mac, macos ventura cleaner, macos sonoma cleaner, macos sequoia cleaner, apple silicon mac cleaner, m1 mac cleaner, m2 mac cleaner, swiftui mac app open source, mac cleaner github, open source macos utility, mac performance optimizer, speed up mac free, free up disk space mac, mac system junk, mac temp files cleaner, mac log files cleaner -->
+<!-- MacSweep Free Mac Cleaner, macsweep free mac cleaner, MacSweep download, MacSweep mac cleaner, mac cleaner free, best free mac cleaner, free mac cleaner 2026, mac cleaner open source, cleanmymac alternative free, cleanmymac x alternative, cleanmymac alternative open source, free cleanmymac replacement, ccleaner for mac free, ccleaner mac alternative, daisy disk alternative free, mac optimizer free, mac junk cleaner, mac cache cleaner, mac disk cleaner, mac system cleaner, macos cleaner, mac cleaner no subscription, mac malware scanner free, mac malware removal free, mac adware remover, mac ransomware protection, mac real-time protection, mac security scanner, mac privacy cleaner, mac browser cleaner, mac duplicate finder free, mac memory optimizer, mac startup manager, mac login items manager, mac disk space analyzer, mac disk usage map, space lens mac, mac app uninstaller free, xcode cache cleaner, xcode derived data cleaner, npm cache cleaner mac, macos ventura cleaner, macos sonoma cleaner, macos sequoia cleaner, apple silicon mac cleaner, m1 mac cleaner, m2 mac cleaner, swiftui mac app open source, mac cleaner github, open source macos utility, mac performance optimizer, speed up mac free, free up disk space mac, mac system junk, mac temp files cleaner, mac log files cleaner, macsweep free mac cleaner download, macsweep free mac cleaner review, macsweep free mac cleaner alternative, free mac cleaner no subscription, free mac cleaner open source github -->
 
 Built in 2026 by [besttech.pk](https://besttech.pk) using AI-assisted development
