@@ -1,0 +1,5 @@
+User-agent: *
+Allow: / 
+Disallow: /issues
+Disallow: /pulls
+Disallow: /.github
